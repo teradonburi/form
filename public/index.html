@@ -1,0 +1,52 @@
+<html>
+  <head>
+    <title>タイトル</title>
+  </head>
+<body>
+  <form>
+    <div>
+      <label for='name'>氏名:</label>
+      <input id='name' name='name' value='テスト' />
+    </div>
+    <div>
+      <input type='file' name='image' />
+    </div>
+    <input type='submit' value='送信' />
+  </form>
+
+  <script>
+const form = document.querySelector('form')
+
+// 送信処理
+function sendData(form) {
+  const XHR = new XMLHttpRequest()
+
+  // FormDataオブジェクトとform要素を紐づけます
+  const FD = new FormData(form)
+  // 追加のデータ
+  FD.append('extra', '追加データ')
+
+  // データが正常に送信された場合に行う処理を定義します
+  XHR.addEventListener('load', function(event) {
+    alert(event.target.responseText)
+  })
+
+  // エラーが発生した場合に行う処理を定義します
+  XHR.addEventListener('error', function(event) {
+    alert(event)
+  })
+  // リクエストのメソッド形式とurlをセット
+  XHR.open('POST', 'https://form-example-teradonburi.glitch.me/api/upload')
+  // 送信
+  XHR.send(FD)
+}
+
+// フォームの submit イベントを乗っ取ります
+form.addEventListener('submit', function (e) {
+  // フォームのデフォルトの送信後の挙動を無効化します。
+  event.preventDefault()
+  sendData(e.target)
+})
+  </script>
+</body>
+</html>
